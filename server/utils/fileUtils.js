@@ -47,7 +47,7 @@ function getFileStat(path) {
   }
 }
 
-async function getFileTimestampsWithIno(path) {
+async function getFileTimestampsWithInode(path) {
   try {
     var stat = await fs.stat(path, { bigint: true })
     return {
@@ -58,11 +58,11 @@ async function getFileTimestampsWithIno(path) {
       ino: String(stat.ino)
     }
   } catch (err) {
-    Logger.error(`[fileUtils] Failed to getFileTimestampsWithIno for path "${path}"`, err)
+    Logger.error(`[fileUtils] Failed to getFileTimestampsWithInode for path "${path}"`, err)
     return false
   }
 }
-module.exports.getFileTimestampsWithIno = getFileTimestampsWithIno
+module.exports.getFileTimestampsWithInode = getFileTimestampsWithInode
 
 /**
  * Get file size

@@ -14,6 +14,7 @@ const { AudioMimeType } = require('./constants')
  * @return {String} Pretty posix file path
  */
 const filePathToPOSIX = (path) => {
+  if (path === null) return path
   if (!global.isWin || !path) return path
   return path.startsWith('\\\\') ? '\\\\' + path.slice(2).replace(/\\/g, '/') : path.replace(/\\/g, '/')
 }

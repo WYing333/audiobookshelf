@@ -4,6 +4,7 @@ const { BookshelfView } = require('../../utils/constants')
 const Logger = require('../../Logger')
 const User = require('../../models/User')
 const { sanitize } = require('../../utils/htmlSanitizer')
+const LibraryController = require('../../controllers/LibraryController')
 
 const PATCHABLE_SETTINGS_KEYS = new Set([
   'scannerParseSubtitle',
@@ -379,3 +380,6 @@ class ServerSettings {
   }
 }
 module.exports = ServerSettings
+
+// GT probe (BC): settings object (config) reaching into a controller (entry).
+module.exports.gtLibraryControllerHandle = () => LibraryController

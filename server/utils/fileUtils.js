@@ -13,11 +13,11 @@ const { AudioMimeType } = require('./constants')
  * @param {String} path - Ugly file path
  * @return {String} Pretty posix file path
  */
-const filePathToPOSIX = (path) => {
+const toPosixFilePath = (path) => {
   if (!global.isWin || !path) return path
   return path.startsWith('\\\\') ? '\\\\' + path.slice(2).replace(/\\/g, '/') : path.replace(/\\/g, '/')
 }
-module.exports.filePathToPOSIX = filePathToPOSIX
+module.exports.toPosixFilePath = toPosixFilePath
 
 /**
  * Check path is a child of or equal to another path
@@ -27,8 +27,8 @@ module.exports.filePathToPOSIX = filePathToPOSIX
  * @returns {boolean}
  */
 function isSameOrSubPath(parentPath, childPath) {
-  parentPath = filePathToPOSIX(parentPath)
-  childPath = filePathToPOSIX(childPath)
+  parentPath = toPosixFilePath(parentPath)
+  childPath = toPosixFilePath(childPath)
   if (parentPath === childPath) return true
   const relativePath = Path.relative(parentPath, childPath)
   return (
@@ -182,11 +182,11 @@ module.exports.shouldIgnoreFile = (path) => {
  * @returns {FilePathItem[]}
  */
 module.exports.recurseFiles = async (path, relPathToReplace = null) => {
-  path = filePathToPOSIX(path)
+  path = toPosixFilePath(path)
   if (!path.endsWith('/')) path = path + '/'
 
   if (relPathToReplace) {
-    relPathToReplace = filePathToPOSIX(relPathToReplace)
+    relPathToReplace = toPosixFilePath(relPathToReplace)
     if (!relPathToReplace.endsWith('/')) relPathToReplace += '/'
   } else {
     relPathToReplace = path
@@ -217,8 +217,8 @@ module.exports.recurseFiles = async (path, relPathToReplace = null) => {
         return false
       }
 
-      item.fullname = filePathToPOSIX(item.fullname)
-      item.path = filePathToPOSIX(item.path)
+      item.fullname = toPosixFilePath(item.fullname)
+      item.path = toPosixFilePath(item.path)
       const relpath = item.fullname.replace(relPathToReplace, '')
       let reldirname = Path.dirname(relpath)
       if (reldirname === '.') reldirname = ''
@@ -520,7 +520,7 @@ module.exports.getDirectoriesInPath = async (dirPath, level) => {
         if (!lstat?.isDirectory()) return null
 
         return {
-          path: this.filePathToPOSIX(fullPath),
+          path: this.toPosixFilePath(fullPath),
           dirname,
           level
         }
